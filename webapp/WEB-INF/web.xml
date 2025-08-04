@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee 
+                             https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+    <display-name>Mahyco Visitor Management System</display-name>
+
+    <welcome-file-list>
+        <welcome-file>EmployeeLogin.jsp</welcome-file>
+    </welcome-file-list>
+
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+
+    <!-- Tell Jasper to compile JSPs with Java 8+ compatibility -->
+    <servlet>
+        <servlet-name>jsp</servlet-name>
+        <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
+        <init-param>
+            <param-name>compilerSourceVM</param-name>
+            <param-value>1.8</param-value>
+        </init-param>
+        <init-param>
+            <param-name>compilerTargetVM</param-name>
+            <param-value>1.8</param-value>
+        </init-param>
+        <load-on-startup>3</load-on-startup>
+    </servlet>
+
+    <!-- All your existing servlets -->
+    <servlet>
+        <servlet-name>ValidateEmployeeServlet</servlet-name>
+        <servlet-class>com.verifyVisitor.ValidateEmployeeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ValidateSecurityServlet</servlet-name>
+        <servlet-class>com.verifyVisitor.ValidateSecurityServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GenerateOTPServlet</servlet-name>
+        <servlet-class>com.verifyVisitor.GenerateOTPServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VerifyOTPServlet</servlet-name>
+        <servlet-class>com.verifyVisitor.VerifyOTPServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ProfileServlet</servlet-name>
+        <servlet-class>com.verifyVisitor.ProfileServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>HostGuestDataServlet</servlet-name>
+        <servlet-class>com.verifyVisitor.HostGuestDataServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewGuestServlet</servlet-name>
+        <servlet-class>com.verifyVisitor.ViewGuestServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RegisterVisitorServlet</servlet-name>
+        <servlet-class>com.verifyVisitor.RegisterVisitorServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>VisitorDashboardServlet</servlet-name>
+        <servlet-class>com.verifyVisitor.VisitorDashboardServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>SecurityServlet</servlet-name>
+        <servlet-class>com.verifyVisitor.SecurityServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>com.verifyVisitor.LogoutServlet</servlet-class>
+    </servlet>
+
+    <!-- Mappings -->
+    <servlet-mapping>
+        <servlet-name>ValidateEmployeeServlet</servlet-name>
+        <url-pattern>/ValidateEmployee</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ValidateSecurityServlet</servlet-name>
+        <url-pattern>/ValidateSecurity</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GenerateOTPServlet</servlet-name>
+        <url-pattern>/GenerateOTPServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GenerateOTPServlet</servlet-name>
+        <url-pattern>/generateOTP</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VerifyOTPServlet</servlet-name>
+        <url-pattern>/verifyOTP</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ProfileServlet</servlet-name>
+        <url-pattern>/Profile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>HostGuestDataServlet</servlet-name>
+        <url-pattern>/HostGuestData</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewGuestServlet</servlet-name>
+        <url-pattern>/ViewGuest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RegisterVisitorServlet</servlet-name>
+        <url-pattern>/RegisterVisitor</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>VisitorDashboardServlet</servlet-name>
+        <url-pattern>/VisitorDashboard</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SecurityServlet</servlet-name>
+        <url-pattern>/SecurityServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/Logout</url-pattern>
+    </servlet-mapping>
+
+
+</web-app>
