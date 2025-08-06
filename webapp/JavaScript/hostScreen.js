@@ -266,6 +266,46 @@ function getStatusBadge(status) {
     }
 }
 
+// Mark visit complete function - Add this block to your hostScreen.js
+async function markVisitComplete(passId) {
+    if (!confirm('Are you sure you want to mark this visit as complete?')) {
+        return;
+    }
+
+    try {
+        // Send as form data to match servlet parameter reading
+        const formData = new URLSearchParams();
+        formData.append('action', 'update');
+        formData.append('updateAction', 'markDone');
+        formData.append('passId', passId);
+
+        const response = await fetch('VisitorDashboard', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: formData
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result.status === 'success') {
+            showMessage('Visit marked as complete successfully!', 'success');
+            // Refresh the table to show updated status
+            updateVisitorsTable();
+        } else {
+            showMessage(result.message || 'Failed to mark visit as complete', 'error');
+        }
+
+    } catch (error) {
+        console.error('Error marking visit complete:', error);
+        showMessage('Error marking visit complete. Please try again.', 'error');
+    }
+}
 // Enhanced action button function
 function getActionButton(visitor) {
     const status = visitor.status ? visitor.status.toString().toLowerCase().trim() : '';
