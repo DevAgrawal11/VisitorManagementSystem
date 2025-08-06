@@ -42,8 +42,9 @@ if (empId == null || empRole == null || !empRole.equals("security")) {
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert2/11.7.0/sweetalert2.min.css">
 
+<!-- Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-</head>
 <style>
 :root {
 	--primary-color: #2e7d32;
@@ -51,10 +52,78 @@ if (empId == null || empRole == null || !empRole.equals("security")) {
 	--secondary-color: #f8f9fa;
 }
 
+/* Creative Animated Background */
 body {
-	background-color: #f5f5f5;
-	overflow-x: hidden;
+	background: linear-gradient(135deg, #f8fffe 0%, #f0f9f0 50%, #fafafa 100%);
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	position: relative;
+	overflow-x: hidden;
+}
+
+/* Floating Background Icons */
+.bg-decoration {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	z-index: -1;
+	overflow: hidden;
+}
+
+.floating-icon {
+	position: absolute;
+	opacity: 0.15;
+	animation: float 15s infinite linear;
+	font-size: 24px;
+	color: var(--primary-color);
+}
+
+.floating-icon:nth-child(odd) {
+	animation-direction: reverse;
+	animation-duration: 20s;
+}
+
+.floating-icon:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+.floating-icon:nth-child(2) { top: 20%; left: 80%; animation-delay: 2s; }
+.floating-icon:nth-child(3) { top: 60%; left: 5%; animation-delay: 4s; }
+.floating-icon:nth-child(4) { top: 40%; left: 90%; animation-delay: 6s; }
+.floating-icon:nth-child(5) { top: 80%; left: 15%; animation-delay: 8s; }
+.floating-icon:nth-child(6) { top: 70%; left: 85%; animation-delay: 10s; }
+.floating-icon:nth-child(7) { top: 30%; left: 60%; animation-delay: 12s; }
+.floating-icon:nth-child(8) { top: 90%; left: 70%; animation-delay: 14s; }
+.floating-icon:nth-child(9) { top: 15%; left: 40%; animation-delay: 16s; }
+.floating-icon:nth-child(10) { top: 55%; left: 75%; animation-delay: 18s; }
+
+@keyframes float {
+	0% {
+		transform: translateY(0px) rotate(0deg);
+		opacity: 0.15;
+	}
+	50% {
+		transform: translateY(-20px) rotate(180deg);
+		opacity: 0.10;
+	}
+	100% {
+		transform: translateY(0px) rotate(360deg);
+		opacity: 0.15;
+	}
+}
+
+/* Subtle pattern overlay */
+body::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-image: 
+		radial-gradient(circle at 25% 25%, rgba(46, 125, 50, 0.03) 0%, transparent 50%),
+		radial-gradient(circle at 75% 75%, rgba(46, 125, 50, 0.02) 0%, transparent 50%);
+	z-index: -1;
+	pointer-events: none;
 }
 
 .header {
@@ -76,12 +145,13 @@ body {
 }
 
 .form-section {
-	background: white;
-	border-radius: 8px;
-	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+	background: rgba(255, 255, 255, 0.95);
+	border-radius: 12px;
+	box-shadow: 0 8px 25px rgba(0,0,0,0.08);
 	padding: 20px;
 	margin-bottom: 25px;
 	border-top: 3px solid var(--primary-color);
+	backdrop-filter: blur(10px);
 }
 
 .form-section h3 {
@@ -155,14 +225,15 @@ body {
 }
 
 .stat-box {
-	background: white;
+	background: rgba(255, 255, 255, 0.95);
 	padding: 15px;
 	border-radius: 8px;
 	text-align: center;
 	min-width: 80px;
 	border: 1px solid #ddd;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+	box-shadow: 0 4px 8px rgba(0,0,0,0.08);
 	flex: 1;
+	backdrop-filter: blur(5px);
 }
 
 .stat-box strong {
@@ -188,10 +259,12 @@ body {
 }
 
 .scanner-section {
-	background: white;
-	padding: 5px;
+	background: rgba(255, 255, 255, 0.9);
+	padding: 15px;
 	border-radius: 8px;
 	margin-bottom: 0;
+	backdrop-filter: blur(5px);
+	box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
 .scanner-section h4 {
@@ -199,28 +272,32 @@ body {
 }
 
 .manual-entry {
-	background: white;
+	background: rgba(255, 255, 255, 0.95);
 	padding: 20px;
 	border-radius: 8px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 	display: none;
+	backdrop-filter: blur(10px);
 }
 
 .manual-entry-btn {
 	background: var(--primary-color);
 	color: white;
 	padding: 8px 15px;
-	border: white;
-	border-radius: 5px;
+	border: none;
+	border-radius: 6px;
 	cursor: pointer;
 	display: inline-flex;
 	align-items: center;
 	margin-left: 15px;
+	transition: all 0.3s ease;
+	font-weight: 500;
 }
 
 .manual-entry-btn:hover {
 	background: #1e5c22;
-	border: white;
+	transform: translateY(-1px);
+	box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 .manual-entry-btn i {
@@ -229,19 +306,21 @@ body {
 
 #vehicleSection {
 	display: block !important;
-	background: #fff3cd;
+	background: rgba(255, 243, 205, 0.9);
 	padding: 15px;
 	margin: 15px 0;
-	border-radius: 5px;
+	border-radius: 8px;
 	border: 1px solid #ffeaa7;
+	backdrop-filter: blur(5px);
 }
 
 .vehicle-section {
-	background: #fff3cd;
+	background: rgba(255, 243, 205, 0.9);
 	padding: 15px;
 	margin: 15px 0;
-	border-radius: 5px;
+	border-radius: 8px;
 	border: 1px solid #ffeaa7;
+	backdrop-filter: blur(5px);
 }
 
 .vehicle-section h5 {
@@ -256,10 +335,12 @@ body {
 	padding: 8px 15px;
 	border-radius: 5px;
 	margin-right: 10px;
+	transition: all 0.3s ease;
 }
 
 .btn-confirm:hover {
 	background: #1e5c22;
+	transform: translateY(-1px);
 }
 
 .btn-deny {
@@ -268,37 +349,42 @@ body {
 	color: white;
 	padding: 8px 15px;
 	border-radius: 5px;
+	transition: all 0.3s ease;
 }
 
 .btn-deny:hover {
 	background: #c82333;
+	transform: translateY(-1px);
 }
 
 .result-success {
 	color: #155724;
-	background-color: #d4edda;
+	background-color: rgba(212, 237, 218, 0.9);
 	border: 1px solid #c3e6cb;
 	padding: 10px;
 	border-radius: 5px;
 	margin: 10px 0;
+	backdrop-filter: blur(5px);
 }
 
 .result-warning {
 	color: #856404;
-	background-color: #fff3cd;
+	background-color: rgba(255, 243, 205, 0.9);
 	border: 1px solid #ffeaa7;
 	padding: 10px;
 	border-radius: 5px;
 	margin: 10px 0;
+	backdrop-filter: blur(5px);
 }
 
 .result-error {
 	color: #721c24;
-	background-color: #f8d7da;
+	background-color: rgba(248, 215, 218, 0.9);
 	border: 1px solid #f5c6cb;
 	padding: 10px;
 	border-radius: 5px;
 	margin: 10px 0;
+	backdrop-filter: blur(5px);
 }
 
 .notifications-badge {
@@ -327,16 +413,18 @@ body {
 
 /* Modal styles for manual entry */
 .manual-entry-modal .modal-content {
-	border-radius: 10px;
+	border-radius: 12px;
 	border: none;
-	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+	backdrop-filter: blur(10px);
+	background: rgba(255, 255, 255, 0.98);
 }
 
 .manual-entry-modal .modal-header {
 	background-color: var(--primary-color);
 	color: white;
 	border-bottom: none;
-	border-radius: 10px 10px 0 0;
+	border-radius: 12px 12px 0 0;
 	padding: 15px 20px;
 }
 
@@ -351,15 +439,51 @@ body {
 .manual-entry-modal .modal-footer {
 	border-top: none;
 	padding: 15px 20px;
-	background-color: #f8f9fa;
-	border-radius: 0 0 10px 10px;
+	background-color: rgba(248, 249, 250, 0.9);
+	border-radius: 0 0 12px 12px;
+	backdrop-filter: blur(5px);
 }
 
 .manual-entry-modal .btn-close {
 	filter: invert(1);
 }
 
-@media ( max-width : 768px) {
+/* Enhanced form controls */
+.form-control, .form-select {
+	background: rgba(255, 255, 255, 0.9);
+	border: 1px solid #dee2e6;
+	border-radius: 6px;
+	transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+	background: rgba(255, 255, 255, 1);
+	border-color: var(--primary-color);
+	box-shadow: 0 0 0 0.2rem rgba(46, 125, 50, 0.25);
+}
+
+/* Enhanced buttons */
+.btn {
+	border-radius: 6px;
+	font-weight: 500;
+	transition: all 0.3s ease;
+}
+
+.btn:hover {
+	transform: translateY(-1px);
+}
+
+.btn-success {
+	background: var(--primary-color);
+	border-color: var(--primary-color);
+}
+
+.btn-success:hover {
+	background: #1e5c22;
+	border-color: #1e5c22;
+}
+
+@media (max-width: 768px) {
 	.table thead {
 		font-size: 0.75rem;
 	}
@@ -370,11 +494,14 @@ body {
 		margin-bottom: 10px;
 	}
 	.dropdown-toggle span {
-		display: none; /* hides name text beside profile pic */
+		display: none;
+	}
+	.floating-icon {
+		font-size: 20px;
 	}
 }
 
-@media ( max-width : 576px) {
+@media (max-width: 576px) {
 	.logo-container {
 		flex-direction: column;
 		align-items: flex-start;
@@ -418,9 +545,28 @@ body {
 		min-width: unset;
 		width: 100%;
 	}
+	.floating-icon {
+		font-size: 18px;
+	}
 }
 </style>
+</head>
+
 <body>
+	<!-- Creative Background Decoration -->
+	<div class="bg-decoration">
+		<div class="floating-icon"><i class="fas fa-shield-alt"></i></div>
+		<div class="floating-icon"><i class="fas fa-id-card-alt"></i></div>
+		<div class="floating-icon"><i class="fas fa-user-shield"></i></div>
+		<div class="floating-icon"><i class="fas fa-car"></i></div>
+		<div class="floating-icon"><i class="fas fa-clipboard-check"></i></div>
+		<div class="floating-icon"><i class="fas fa-door-open"></i></div>
+		<div class="floating-icon"><i class="fas fa-users-cog"></i></div>
+		<div class="floating-icon"><i class="fas fa-qrcode"></i></div>
+		<div class="floating-icon"><i class="fas fa-building"></i></div>
+		<div class="floating-icon"><i class="fas fa-hand-paper"></i></div>
+	</div>
+
 	<!-- Header with Logo and User Info -->
 	<header class="header">
 		<div class="container">
@@ -540,8 +686,6 @@ body {
 								<div id="vehicleTypeWrapper" style="display: none;">
 									<label class="mt-2"><strong>Vehicle Type:</strong></label> <select
 										class="form-control" id="vehicleType">
-										<!-- <option value="" disabled selected hidden>-- Select Vehicle Type --</option>
- -->
 										<option value="Personal Vehicle">Personal Vehicle</option>
 										<option value="Mahyco Vehicle">Mahyco Vehicle</option>
 									</select>
