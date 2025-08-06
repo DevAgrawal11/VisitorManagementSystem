@@ -1,4 +1,4 @@
-// Enhanced hostScreen.js with improved dashboard loading and DD-MM-YYYY date formatting
+// Clean hostScreen.js with improved functionality and removed redundancy
 const loggedInHostName = window.loggedInHostName || 'Unknown';
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -13,11 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (toDate) toDate.value = today;
 
     initializeForm();
-    
-    // Show registration form by default instead of dashboard
     showRegistrationForm();
-    
-    // Initialize current time in visitor form
     formatCurrentTimeInput();
 });
 
@@ -30,7 +26,6 @@ function initializeForm() {
 
     form.addEventListener('submit', function (e) {
         e.preventDefault();
-        console.log('Form submitted, calling generateAndSendPass...');
         generateAndSendPass();
     });
 }
@@ -53,7 +48,6 @@ function showMessage(message, type = 'success') {
 
     messageContainer.innerHTML = `<div class="${messageClass}">${message}</div>`;
 
-    // Auto-hide message after 5 seconds
     setTimeout(() => {
         messageContainer.innerHTML = '';
     }, 5000);
@@ -131,7 +125,6 @@ async function generateAndSendPass() {
             
             // Clear form after successful submission
             document.getElementById('visitorForm').reset();
-            // Reset the visitDateTime field to current time
             formatCurrentTimeInput();
             
         } else {
@@ -148,10 +141,9 @@ function showDashboard() {
     document.getElementById("dashboardSection").style.display = "block";
     document.getElementById("registerVisitorSection").style.display = "none";
     
-    // Initialize DataTable when dashboard is shown
     setTimeout(() => {
         if (!$.fn.DataTable.isDataTable('#visitorsTable')) {
-            initializeDataTableWithExports();
+            initializeDataTable();
         }
         updateVisitorsTable();
     }, 100);
@@ -162,7 +154,6 @@ function showRegistrationForm() {
     document.getElementById("registerVisitorSection").style.display = "block";
 }
 
-// Fixed updateVisitorsTable function
 function updateVisitorsTable() {
     const fromDate = document.getElementById('fromDate').value;
     const toDate = document.getElementById('toDate').value;
@@ -172,17 +163,14 @@ function updateVisitorsTable() {
         return;
     }
 
-    // Initialize table if not already initialized
     let table;
     if (!$.fn.DataTable.isDataTable('#visitorsTable')) {
-        table = initializeDataTableWithExports();
+        table = initializeDataTable();
     } else {
         table = $('#visitorsTable').DataTable();
     }
     
     table.clear().draw();
-    
-    // Show loading message
     showMessage('Loading visitors...', 'info');
     
     fetch(`VisitorDashboard?action=dashboard&fromDate=${fromDate}&toDate=${toDate}`)
@@ -193,7 +181,6 @@ function updateVisitorsTable() {
             return response.json();
         })
         .then(data => {
-            // Clear loading message
             document.getElementById('messageContainer').innerHTML = '';
             
             if (data.status === 'error') {
@@ -207,7 +194,6 @@ function updateVisitorsTable() {
                 return;
             }
 
-            // Add rows to DataTable
             visitors.forEach(visitor => {
                 const statusBadge = getStatusBadge(visitor.status);
                 const actionButton = getActionButton(visitor);
@@ -231,16 +217,11 @@ function updateVisitorsTable() {
             showMessage(`Loaded ${visitors.length} visitor(s) successfully.`, 'success');
         })
         .catch(error => {
-        console.error('Error:', error);
-        showMessage(error.message, 'error');
-    })
-    .finally(() => {
-        button.disabled = false;
-        button.textContent = originalText;
-    });
+            console.error('Error:', error);
+            showMessage(error.message, 'error');
+        });
 }
 
-// Enhanced status display function
 function getStatusBadge(status) {
     const normalizedStatus = status ? status.toString().toLowerCase().trim() : '';
     
@@ -266,14 +247,12 @@ function getStatusBadge(status) {
     }
 }
 
-// Mark visit complete function - Add this block to your hostScreen.js
 async function markVisitComplete(passId) {
     if (!confirm('Are you sure you want to mark this visit as complete?')) {
         return;
     }
 
     try {
-        // Send as form data to match servlet parameter reading
         const formData = new URLSearchParams();
         formData.append('action', 'update');
         formData.append('updateAction', 'markDone');
@@ -295,7 +274,6 @@ async function markVisitComplete(passId) {
 
         if (result.status === 'success') {
             showMessage('Visit marked as complete successfully!', 'success');
-            // Refresh the table to show updated status
             updateVisitorsTable();
         } else {
             showMessage(result.message || 'Failed to mark visit as complete', 'error');
@@ -306,7 +284,7 @@ async function markVisitComplete(passId) {
         showMessage('Error marking visit complete. Please try again.', 'error');
     }
 }
-// Enhanced action button function
+
 function getActionButton(visitor) {
     const status = visitor.status ? visitor.status.toString().toLowerCase().trim() : '';
     
@@ -329,13 +307,11 @@ function getActionButton(visitor) {
     return buttons;
 }
 
-// Helper function to escape quotes in strings
 function escapeQuotes(str) {
     if (!str) return '';
     return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
 }
 
-// Enhanced resend gate pass function
 function resendGatePass(passId, name, mobile, whomToMeet, purpose, visitDate) {
     if (!confirm('Are you sure you want to resend the gate pass?')) {
         return;
@@ -349,7 +325,6 @@ function resendGatePass(passId, name, mobile, whomToMeet, purpose, visitDate) {
             return;
         }
 
-        // Format the date and time for WhatsApp message
         let formattedDate = '';
         let formattedTime = '';
         
@@ -393,7 +368,6 @@ function resendGatePass(passId, name, mobile, whomToMeet, purpose, visitDate) {
     }
 }
 
-// Enhanced time formatting functions
 function formatTimeTo12Hour(timeString) {
     if (!timeString || timeString === 'N/A') return 'N/A';
     
@@ -424,29 +398,22 @@ function formatTimeTo12Hour(timeString) {
     }
 }
 
-// Date formatting function to convert to DD-MM-YYYY format
 function formatDateToDDMMYY(dateString) {
     if (!dateString) return 'N/A';
     
     try {
         let date;
         
-        // Handle different date formats
         if (dateString.includes('T')) {
-            // ISO format with time
             date = new Date(dateString);
         } else if (dateString.includes('-')) {
-            // Check if it's already in YYYY-MM-DD format
             const parts = dateString.split('-');
             if (parts.length === 3) {
                 if (parts[0].length === 4) {
-                    // YYYY-MM-DD format
                     date = new Date(dateString);
                 } else if (parts[2].length === 4) {
-                    // DD-MM-YYYY format (already correct)
                     return dateString;
                 } else {
-                    // MM-DD-YYYY format, need to convert
                     date = new Date(`${parts[2]}-${parts[0]}-${parts[1]}`);
                 }
             } else {
@@ -456,7 +423,6 @@ function formatDateToDDMMYY(dateString) {
             date = new Date(dateString);
         }
         
-        // Validate date
         if (isNaN(date.getTime())) {
             console.warn('Invalid date:', dateString);
             return dateString;
@@ -473,7 +439,6 @@ function formatDateToDDMMYY(dateString) {
     }
 }
 
-// Auto-fill current date/time when form loads
 function formatCurrentTimeInput() {
     const visitDateTime = document.getElementById('visitDateTime');
     if (visitDateTime && !visitDateTime.value) {
@@ -488,148 +453,144 @@ function formatCurrentTimeInput() {
     }
 }
 
-// Enhanced DataTables initialization with export functionality
-function initializeDataTableWithExports() {
-    // Destroy existing DataTable if it exists
+function exportTable(format) {
+    if (!$.fn.DataTable.isDataTable('#visitorsTable')) {
+        showMessage('No data to export. Please load data first.', 'warning');
+        return;
+    }
+    
+    const table = $('#visitorsTable').DataTable();
+    
+    // Get current data and format it for export
+    const data = table.rows().data().toArray();
+    const headers = ['Pass ID', 'Name', 'Mobile', 'Person to Meet', 'Purpose', 'Status', 'In Time', 'Out Time', 'Visit Date'];
+    
+    // Clean data by removing HTML tags
+    const cleanData = data.map(row => 
+        row.slice(0, 9).map(cell => cell.replace(/<[^>]*>/g, ''))
+    );
+    
+    const fromDate = document.getElementById('fromDate')?.value || 'All';
+    const toDate = document.getElementById('toDate')?.value || 'All';
+    const fileName = `Visitor_Report_${fromDate}_to_${toDate}`;
+    
+    switch(format) {
+        case 'csv':
+            exportToCSV(headers, cleanData, fileName);
+            break;
+        case 'excel':
+            exportToExcel(headers, cleanData, fileName);
+            break;
+        case 'pdf':
+            exportToPDF(headers, cleanData, fileName);
+            break;
+        case 'print':
+            printTable(headers, cleanData);
+            break;
+    }
+}
+
+function exportToCSV(headers, data, filename) {
+    const csvContent = [
+        headers.join(','),
+        ...data.map(row => row.join(','))
+    ].join('\n');
+    
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${filename}.csv`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
+
+function exportToExcel(headers, data, filename) {
+    // Simple Excel export using HTML table format
+    const table = document.createElement('table');
+    const thead = table.createTHead();
+    const headerRow = thead.insertRow();
+    
+    headers.forEach(header => {
+        const th = document.createElement('th');
+        th.textContent = header;
+        headerRow.appendChild(th);
+    });
+    
+    const tbody = table.createTBody();
+    data.forEach(rowData => {
+        const row = tbody.insertRow();
+        rowData.forEach(cellData => {
+            const cell = row.insertCell();
+            cell.textContent = cellData;
+        });
+    });
+    
+    const html = `<html><head><meta charset="utf-8"></head><body>${table.outerHTML}</body></html>`;
+    const blob = new Blob([html], { type: 'application/vnd.ms-excel' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${filename}.xls`;
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
+
+function exportToPDF(headers, data, filename) {
+    window.print(); // Simple print functionality
+}
+
+function printTable(headers, data) {
+    const printWindow = window.open('', '_blank');
+    const html = `
+        <html>
+            <head>
+                <title>Visitor Report</title>
+                <style>
+                    body { font-family: Arial, sans-serif; margin: 20px; }
+                    h2 { text-align: center; margin-bottom: 20px; }
+                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+                    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; font-size: 11px; }
+                    th { background-color: #2e7d32; color: white; }
+                    tr:nth-child(even) { background-color: #f2f2f2; }
+                    @media print { 
+                        body { margin: 0; }
+                        .no-print { display: none; }
+                    }
+                </style>
+            </head>
+            <body>
+                <h2>Mahyco Visitor Management System - Report</h2>
+                <table>
+                    <thead>
+                        <tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr>
+                    </thead>
+                    <tbody>
+                        ${data.map(row => `<tr>${row.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}
+                    </tbody>
+                </table>
+                <p style="text-align: center; margin-top: 20px; font-size: 12px;">
+                    Generated on: ${new Date().toLocaleString()}
+                </p>
+            </body>
+        </html>
+    `;
+    
+    printWindow.document.write(html);
+    printWindow.document.close();
+    printWindow.print();
+}
+
+function initializeDataTable() {
     if ($.fn.DataTable.isDataTable('#visitorsTable')) {
         $('#visitorsTable').DataTable().destroy();
     }
     
-    // Initialize DataTable with export buttons
-    const table = $('#visitorsTable').DataTable({
+    return $('#visitorsTable').DataTable({
         responsive: true,
         pageLength: 10,
         lengthMenu: [5, 10, 25, 50, 100],
         order: [[8, 'desc']], // Sort by visit date descending
-        dom: 'Bfrtip', // B = Buttons, f = filter, r = processing, t = table, i = info, p = pagination
-        buttons: [
-            {
-                extend: 'csvHtml5',
-                text: '<i class="fas fa-file-csv"></i> CSV',
-                className: 'dt-button buttons-csv',
-                title: function() {
-                    const fromDate = document.getElementById('fromDate')?.value || 'All';
-                    const toDate = document.getElementById('toDate')?.value || 'All';
-                    return `Visitor_Report_${fromDate}_to_${toDate}`;
-                },
-                exportOptions: {
-                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8], // Exclude Actions column
-                    modifier: {
-                        page: 'all'
-                    },
-                    format: {
-                        body: function(data, row, column, node) {
-                            // Remove HTML tags from exported data
-                            return data.replace(/<[^>]*>/g, '');
-                        }
-                    }
-                }
-            },
-            {
-                extend: 'excelHtml5',
-                text: '<i class="fas fa-file-excel"></i> Excel',
-                className: 'dt-button buttons-excel',
-                title: function() {
-                    const fromDate = document.getElementById('fromDate')?.value || 'All';
-                    const toDate = document.getElementById('toDate')?.value || 'All';
-                    return `Visitor_Report_${fromDate}_to_${toDate}`;
-                },
-                exportOptions: {
-                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8], // Exclude Actions column
-                    modifier: {
-                        page: 'all'
-                    },
-                    format: {
-                        body: function(data, row, column, node) {
-                            // Remove HTML tags from exported data
-                            return data.replace(/<[^>]*>/g, '');
-                        }
-                    }
-                }
-            },
-            {
-                extend: 'pdfHtml5',
-                text: '<i class="fas fa-file-pdf"></i> PDF',
-                className: 'dt-button buttons-pdf',
-                orientation: 'landscape',
-                pageSize: 'A4',
-                title: function() {
-                    const fromDate = document.getElementById('fromDate')?.value || 'All';
-                    const toDate = document.getElementById('toDate')?.value || 'All';
-                    return `Visitor Report (${fromDate} to ${toDate})`;
-                },
-                exportOptions: {
-                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8], // Exclude Actions column
-                    modifier: {
-                        page: 'all'
-                    },
-                    format: {
-                        body: function(data, row, column, node) {
-                            // Remove HTML tags from exported data
-                            return data.replace(/<[^>]*>/g, '');
-                        }
-                    }
-                },
-                customize: function(doc) {
-                    // Add custom styling to PDF
-                    doc.content[1].table.widths = ['8%', '15%', '12%', '15%', '20%', '10%', '8%', '8%', '10%'];
-                    
-                    // Style the header
-                    doc.content[0].fontSize = 16;
-                    doc.content[0].alignment = 'center';
-                    doc.content[0].margin = [0, 0, 0, 12];
-                    
-                    // Add footer with timestamp
-                    doc.footer = function(currentPage, pageCount) {
-                        return {
-                            text: `Generated on: ${new Date().toLocaleString()} | Page ${currentPage} of ${pageCount}`,
-                            alignment: 'center',
-                            fontSize: 8,
-                            margin: [0, 10, 0, 0]
-                        };
-                    };
-                }
-            },
-            {
-                extend: 'print',
-                text: '<i class="fas fa-print"></i> Print',
-                className: 'dt-button buttons-print',
-                title: function() {
-                    const fromDate = document.getElementById('fromDate')?.value || 'All';
-                    const toDate = document.getElementById('toDate')?.value || 'All';
-                    return `Visitor Report (${fromDate} to ${toDate})`;
-                },
-                exportOptions: {
-                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8], // Exclude Actions column
-                    modifier: {
-                        page: 'all'
-                    },
-                    format: {
-                        body: function(data, row, column, node) {
-                            // Remove HTML tags from exported data
-                            return data.replace(/<[^>]*>/g, '');
-                        }
-                    }
-                },
-                customize: function(win) {
-                    // Add custom CSS for print
-                    $(win.document.body)
-                        .css('font-size', '12px')
-                        .prepend('<div style="text-align:center; margin-bottom: 20px;"><h2>Mahyco Visitor Management System</h2></div>');
-                    
-                    $(win.document.body).find('table')
-                        .addClass('compact')
-                        .css('font-size', '11px');
-                }
-            },
-            {
-                text: '<i class="fas fa-sync-alt"></i> Refresh',
-                className: 'dt-button refresh-btn',
-                action: function(e, dt, node, config) {
-                    updateVisitorsTable();
-                }
-            }
-        ],
         columnDefs: [
             { targets: -1, orderable: false }, // Disable sorting on "Actions" column
             { targets: [6, 7], orderable: false } // Disable sorting on time columns
@@ -648,9 +609,4 @@ function initializeDataTableWithExports() {
             }
         }
     });
-    
-    // Move buttons to the designated container
-    table.buttons().container().appendTo('#exportButtonsContainer .dt-buttons');
-    
-    return table;
 }
