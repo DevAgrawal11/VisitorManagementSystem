@@ -21,501 +21,439 @@
     
     <!-- DataTables CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
-    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.bootstrap5.min.css">
     
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <style>
-        :root {
-            --primary-color: #2e7d32;
-            --primary-light: #e8f4fd;
-            --secondary-color: #f8f9fa;
-        }
-        
-        /* Creative Animated Background */
-        body {
-            background: linear-gradient(135deg, #f8fffe 0%, #f0f9f0 50%, #fafafa 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding-top: 70px;
-            position: relative;
-            overflow-x: hidden;
-        }
+<style>
+:root {
+    --primary-color: #2e7d32;
+    --primary-light: #e8f4fd;
+    --secondary-color: #f8f9fa;
+}
 
-        /* Floating Background Icons */
-        .bg-decoration {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
-        }
+/* Creative Animated Background */
+body {
+    background: linear-gradient(135deg, #f8fffe 0%, #f0f9f0 50%, #fafafa 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding-top: 70px;
+    position: relative;
+    overflow-x: hidden;
+}
 
-        .floating-icon {
-            position: absolute;
-            opacity: 0.15;
-            animation: float 15s infinite linear;
-            font-size: 24px;
-            color: var(--primary-color);
-        }
+/* Floating Background Icons */
+.bg-decoration {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -1;
+    overflow: hidden;
+}
 
-        .floating-icon:nth-child(odd) {
-            animation-direction: reverse;
-            animation-duration: 20s;
-        }
+.floating-icon {
+    position: absolute;
+    opacity: 0.15;
+    animation: float 15s infinite linear;
+    font-size: 24px;
+    color: var(--primary-color);
+}
 
-        .floating-icon:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
-        .floating-icon:nth-child(2) { top: 20%; left: 80%; animation-delay: 2s; }
-        .floating-icon:nth-child(3) { top: 60%; left: 5%; animation-delay: 4s; }
-        .floating-icon:nth-child(4) { top: 40%; left: 90%; animation-delay: 6s; }
-        .floating-icon:nth-child(5) { top: 80%; left: 15%; animation-delay: 8s; }
-        .floating-icon:nth-child(6) { top: 70%; left: 85%; animation-delay: 10s; }
-        .floating-icon:nth-child(7) { top: 30%; left: 60%; animation-delay: 12s; }
-        .floating-icon:nth-child(8) { top: 90%; left: 70%; animation-delay: 14s; }
-        .floating-icon:nth-child(9) { top: 15%; left: 40%; animation-delay: 16s; }
-        .floating-icon:nth-child(10) { top: 55%; left: 75%; animation-delay: 18s; }
+.floating-icon:nth-child(odd) {
+    animation-direction: reverse;
+    animation-duration: 20s;
+}
 
-        @keyframes float {
-            0% {
-                transform: translateY(0px) rotate(0deg);
-                opacity: 0.15;
-            }
-            50% {
-                transform: translateY(-20px) rotate(180deg);
-                opacity: 0.10;
-            }
-            100% {
-                transform: translateY(0px) rotate(360deg);
-                opacity: 0.15;
-            }
-        }
+.floating-icon:nth-child(1) { top: 10%; left: 10%; animation-delay: 0s; }
+.floating-icon:nth-child(2) { top: 20%; left: 80%; animation-delay: 2s; }
+.floating-icon:nth-child(3) { top: 60%; left: 5%; animation-delay: 4s; }
+.floating-icon:nth-child(4) { top: 40%; left: 90%; animation-delay: 6s; }
+.floating-icon:nth-child(5) { top: 80%; left: 15%; animation-delay: 8s; }
+.floating-icon:nth-child(6) { top: 70%; left: 85%; animation-delay: 10s; }
+.floating-icon:nth-child(7) { top: 30%; left: 60%; animation-delay: 12s; }
+.floating-icon:nth-child(8) { top: 90%; left: 70%; animation-delay: 14s; }
+.floating-icon:nth-child(9) { top: 15%; left: 40%; animation-delay: 16s; }
+.floating-icon:nth-child(10) { top: 55%; left: 75%; animation-delay: 18s; }
 
-        /* Subtle pattern overlay */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(circle at 25% 25%, rgba(46, 125, 50, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 75% 75%, rgba(46, 125, 50, 0.02) 0%, transparent 50%);
-            z-index: -1;
-            pointer-events: none;
-        }
-        
-        .header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 15px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            z-index: 1000;
-        }
-        
-        .logo-container {
-            display: flex;
-            align-items: center;
-        }
-        
-        .logo-img {
-            height: 50px;
-            margin-right: 10px;
-            background-color: none;
-        }
-        
-        .user-img {
-            width: 35px;
-            height: 35px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-right: 8px;
-        }
-        
-        .page-title {
-            color: white;
-            margin: 0;
-            font-weight: 500;
-            font-size: 1.4rem;
-        }
-        
-        .header-controls {
-            display: flex;
-            align-items: center;
-        }
+@keyframes float {
+    0% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.15;
+    }
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+        opacity: 0.10;
+    }
+    100% {
+        transform: translateY(0px) rotate(360deg);
+        opacity: 0.15;
+    }
+}
 
-        .dashboard-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            padding: 8px 15px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            border-radius: 5px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            margin-right: 15px;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-size: 0.9rem;
-        }
-        
-        .dashboard-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            text-decoration: none;
-            border-color: rgba(255, 255, 255, 0.5);
-        }
-        
-        .user-section {
-            display: flex;
-            align-items: center;
-        }
-        
-        .form-section {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
-            padding: 25px;
-            margin-bottom: 25px;
-            border-top: 3px solid var(--primary-color);
-            backdrop-filter: blur(10px);
-            position: relative;
-        }
-        
-        .form-section h3 {
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eee;
-        }
-        
-        .table-responsive {
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        
-        .table thead th {
-            background-color: var(--primary-color);
-            color: white;
-            font-size: 0.9rem;
-        }
-        
-        .table tbody td {
-            font-size: 0.85rem;
-            padding: 8px;
-        }
-        
-        .action-cell button {
-            font-size: 0.75rem;
-            padding: 4px 8px;
-        }
-        
-        .stats {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 0;
-        }
-        
-        .stat-box {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            min-width: 80px;
-            border: 1px solid #ddd;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            flex: 1;
-            backdrop-filter: blur(5px);
-        }
-        
-        .stat-box strong {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-        }
-        
-        .stat-box small {
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .status-in { 
-            background-color: #d4edda !important; 
-        }
-        
-        .status-out { 
-            background-color: #f8d7da !important; 
-        }
-        
-        .status-pending { 
-            background-color: #cce5ff !important; 
-        }
-        
-        /* Enhanced Export Button Styling */
-        #exportButtonsContainer {
-            margin: 15px 0;
-            padding: 12px;
-            background-color: rgba(248, 249, 250, 0.9);
-            border-radius: 6px;
-            border: 1px solid #e9ecef;
-            backdrop-filter: blur(5px);
-        }
+/* Subtle pattern overlay */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 25% 25%, rgba(46, 125, 50, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 75% 75%, rgba(46, 125, 50, 0.02) 0%, transparent 50%);
+    z-index: -1;
+    pointer-events: none;
+}
 
-        #exportButtonsContainer strong {
-            display: block;
-            margin-bottom: 8px;
-            color: #495057;
-            font-size: 14px;
-        }
+/* Header Styles */
+.header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px 0;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 1000;
+}
 
-        #exportButtonsContainer .dt-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin: 0;
-        }
+.header-layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
 
-        .dt-button {
-            display: inline-flex !important;
-            align-items: center !important;
-            gap: 4px !important;
-            padding: 6px 12px !important;
-            border-radius: 4px !important;
-            border: none !important;
-            font-size: 12px !important;
-            font-weight: 500 !important;
-            text-decoration: none !important;
-            transition: all 0.2s ease !important;
-            cursor: pointer !important;
-            min-width: 80px !important;
-            justify-content: center !important;
-            white-space: nowrap !important;
-        }
+.left-section {
+    flex: 0 0 auto;
+}
 
-        .dt-button:hover {
-            transform: translateY(-1px) !important;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;
-        }
+.center-section {
+    flex: 1;
+    text-align: center;
+    margin: 0 1rem;
+}
 
-        .dt-button i {
-            font-size: 12px !important;
-        }
+.right-section {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
 
-        /* Button specific colors */
-        .buttons-csv {
-            background-color: #198754 !important;
-            color: white !important;
-        }
+.logo-img {
+    height: 50px;
+    background-color: none;
+}
 
-        .buttons-excel {
-            background-color: #0d6efd !important;
-            color: white !important;
-        }
+.page-title {
+    color: white;
+    margin: 0;
+    font-weight: 500;
+    font-size: 1.5rem;
+}
 
-        .buttons-pdf {
-            background-color: #dc3545 !important;
-            color: white !important;
-        }
+.dashboard-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 8px 15px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    gap: 0.5rem;
+}
 
-        .buttons-print {
-            background-color: #6c757d !important;
-            color: white !important;
-        }
+.dashboard-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    text-decoration: none;
+    border-color: rgba(255, 255, 255, 0.5);
+}
 
-        .refresh-btn {
-            background-color: #20c997 !important;
-            color: white !important;
-        }
-        
-        .btn-confirm {
-            background: var(--primary-color);
-            border: none;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 5px;
-            margin-right: 10px;
-        }
-        
-        .btn-confirm:hover {
-            background: #1e5c22;
-        }
-        
-        .btn-deny {
-            background: #dc3545;
-            border: none;
-            color: white;
-            padding: 8px 15px;
-            border-radius: 5px;
-        }
-        
-        .btn-deny:hover {
-            background: #c82333;
-        }
-        
-        .result-success {
-            color: #155724;
-            background-color: #d4edda;
-            border: 1px solid #c3e6cb;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 10px 0;
-        }
-        
-        .result-warning {
-            color: #856404;
-            background-color: #fff3cd;
-            border: 1px solid #ffeaa7;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 10px 0;
-        }
-        
-        .result-error {
-            color: #721c24;
-            background-color: #f8d7da;
-            border: 1px solid #f5c6cb;
-            padding: 10px;
-            border-radius: 5px;
-            margin: 10px 0;
-        }
+.user-img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    object-fit: cover;
+}
 
-        .stats-scanner-row {
-            margin-bottom: 1px;
-        }
+/* Export Container - Fixed positioning for dropdown */
+#exportButtonsContainer {
+    margin: 15px 0;
+    padding: 12px;
+    background-color: rgba(248, 249, 250, 0.9);
+    border-radius: 6px;
+    border: 1px solid #e9ecef;
+    backdrop-filter: blur(5px);
+    position: relative;
+    z-index: 100;
+}
 
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .header {
-                padding: 8px 0;
-            }
-            
-            .header .container {
-                flex-direction: column;
-                gap: 10px;
-                align-items: stretch;
-            }
-            
-            .header-center {
-                order: 1;
-                text-align: left;
-            }
-            
-            .logo-container {
-                order: 2;
-                justify-content: flex-start;
-            }
-            
-            .header-right {
-                order: 3;
-                justify-content: space-between;
-                width: 100%;
-            }
-            
-            .page-title {
-                font-size: 1.1rem;
-            }
-            
-            .company-logo {
-                height: 35px;
-            }
-            
-            body {
-                padding-top: 90px;
-            }
+.export-controls .btn {
+    font-size: 0.875rem;
+}
 
-            .table thead {
-                font-size: 0.75rem;
-            }
+.export-controls .dropdown-menu {
+    z-index: 1050 !important;
+    position: absolute !important;
+}
 
-            .table td, .table th {
-                white-space: nowrap;
-            }
+.export-controls .dropdown-item {
+    font-size: 0.875rem;
+    padding: 0.5rem 1rem;
+}
 
-            .date-range .col-md-4,
-            .date-range .col-md-2 {
-                margin-bottom: 10px;
-            }
+.export-controls .dropdown-item:hover {
+    background-color: #f8f9fa;
+}
 
-            .dropdown-toggle span {
-                display: none;
-            }
+/* Hide DataTables default buttons container */
+.dt-buttons {
+    display: none !important;
+}
 
-            #exportButtonsContainer .dt-buttons {
-                justify-content: center;
-            }
-            
-            .dt-button {
-                flex: 1 !important;
-                min-width: 70px !important;
-                font-size: 11px !important;
-                padding: 5px 8px !important;
-            }
+/* Form and Content Styles */
+.form-section {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    padding: 25px;
+    margin-bottom: 25px;
+    border-top: 3px solid var(--primary-color);
+    backdrop-filter: blur(10px);
+    position: relative;
+}
 
-            .floating-icon {
-                font-size: 20px;
-            }
-        }
+.form-section h3 {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
 
-        @media (max-width: 576px) {
-            .dashboard-btn span {
-                display: none;
-            }
-            
-            .dropdown-toggle span {
-                display: none;
-            }
-            
-            .header-right {
-                gap: 10px;
-            }
+.table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
 
-            .logo-container {
-                flex-direction: column;
-                align-items: flex-start;
-            }
+.table thead th {
+    background-color: var(--primary-color);
+    color: white;
+    font-size: 0.9rem;
+}
 
-            .stats-scanner-row {
-                flex-direction: column;
-            }
+.table tbody td {
+    font-size: 0.85rem;
+    padding: 8px;
+}
 
-            .stats-scanner-row > .col-md-6 {
-                width: 100%;
-                margin-bottom: 15px;
-            }
+.action-cell button {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+}
 
-            .stats {
-                flex-direction: column;
-                gap: 10px;
-            }
-            
-            .stat-box {
-                min-width: unset;
-                width: 100%;
-            }
+.stats {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 0;
+}
 
-            #exportButtonsContainer .dt-buttons {
-                flex-direction: column;
-            }
-            
-            .dt-button {
-                width: 100% !important;
-                margin-bottom: 4px !important;
-                min-width: unset !important;
-            }
+.stat-box {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    min-width: 80px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    flex: 1;
+    backdrop-filter: blur(5px);
+}
 
-            .floating-icon {
-                font-size: 18px;
-            }
-        }
-    </style>
+.stat-box strong {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+}
+
+.stat-box small {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.status-in { 
+    background-color: #d4edda !important; 
+}
+
+.status-out { 
+    background-color: #f8d7da !important; 
+}
+
+.status-pending { 
+    background-color: #cce5ff !important; 
+}
+
+/* Button Styles */
+.btn-confirm {
+    background: var(--primary-color);
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.btn-confirm:hover {
+    background: #1e5c22;
+}
+
+.btn-deny {
+    background: #dc3545;
+    border: none;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+
+.btn-deny:hover {
+    background: #c82333;
+}
+
+/* Message Styles */
+.result-success {
+    color: #155724;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.result-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.result-error {
+    color: #721c24;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 10px 0;
+}
+
+.stats-scanner-row {
+    margin-bottom: 1px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .header {
+        padding: 8px 0;
+    }
+    
+    .page-title {
+        font-size: 1.3rem;
+    }
+    
+    .logo-img {
+        height: 40px;
+    }
+    
+    .right-section {
+        gap: 0.5rem;
+    }
+    
+    .dashboard-btn {
+        font-size: 0.8rem;
+        padding: 6px 12px;
+    }
+    
+    .center-section {
+        margin: 0 0.5rem;
+    }
+    
+    body {
+        padding-top: 70px;
+    }
+
+    .table thead {
+        font-size: 0.75rem;
+    }
+
+    .table td, .table th {
+        white-space: nowrap;
+    }
+
+    .date-range .col-md-4,
+    .date-range .col-md-2 {
+        margin-bottom: 10px;
+    }
+
+    .dropdown-toggle span {
+        display: none;
+    }
+
+    .floating-icon {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 576px) {
+    .page-title {
+        font-size: 1.1rem;
+    }
+    
+    .dashboard-btn span {
+        display: none;
+    }
+    
+    .dropdown-toggle span {
+        display: none;
+    }
+    
+    body {
+        padding-top: 65px;
+    }
+
+    .stats-scanner-row {
+        flex-direction: column;
+    }
+
+    .stats-scanner-row > .col-md-6 {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .stats {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .stat-box {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .floating-icon {
+        font-size: 18px;
+    }
+}
+</style>
 </head>
 
 <body>
@@ -534,39 +472,44 @@
     </div>
 
     <!-- Header with Logo and User Info -->
-    <header class="header">
-        <div class="container">
-            <div class="d-flex justify-content-between align-items-center">
-                <div class="logo-container">
-                    <div class="company-logo">
-                        <img src="Images/Mahyco Grow Logo.png" height="60" class="company-logo" alt="Company Logo">
-                    </div>
-                </div>
-                <div>
-                     <h1 class="page-title">Visitor Management System</h1>
-                </div>
-                <div class="user-section">
-                    <a href="#" class="dashboard-btn" onclick="showDashboard()">
-                        📊 Dashboard
+<header class="header">
+    <div class="container">
+        <div class="header-layout">
+            <!-- Left section: Logo only -->
+            <div class="left-section">
+                <img src="Images/Mahyco Grow Logo.png" 
+                     alt="Logo" 
+                     class="logo-img">
+            </div>
+            
+            <!-- Center section: Title -->
+            <div class="center-section">
+                <h1 class="page-title mb-0">Visitor Management System</h1>
+            </div>
+            
+            <!-- Right section: Dashboard button and User Dropdown -->
+            <div class="right-section">
+                <a href="#" class="dashboard-btn" onclick="showDashboard()">
+                    📊 <span>Dashboard</span>
+                </a>
+                
+                <div class="dropdown">
+                    <a class="d-flex align-items-center text-decoration-none dropdown-toggle text-white" 
+                       href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNSIgaGVpZ2h0PSIzNSIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+PGNpcmNsZSBjeD0iMTIiIGN5PSI4IiByPSI0Ii8+PHBhdGggZD0iTTIwIDE5djFhMSAxIDAgMCAxLTEgMUg1YTEgMSAwIDAgMS0xLTF2LTFhMyAzIDAgMCAxIDMtM2gxMGEzIDMgMCAwIDEgMyAzeiIvPjwvc3ZnPg==" 
+                             alt="User" class="user-img me-2">
+                        <span>
+                            <%= session.getAttribute("empName") != null ? session.getAttribute("empName") : "User" %>
+                        </span>
                     </a>
-                    
-                    <div class="dropdown">
-                        <a class="d-flex align-items-center text-decoration-none dropdown-toggle text-white" 
-                           href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNSIgaGVpZ2h0PSIzNSIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+PGNpcmNsZSBjeD0iMTIiIGN5PSI4IiByPSI0Ii8+PHBhdGggZD0iTTIwIDE5djFhMSAxIDAgMCAxLTEgMUg1YTEgMSAwIDAgMS0xLTF2LTFhMyAzIDAgMCAxIDMtM2gxMGEzIDMgMCAwIDEgMyAzeiIvPjwvc3ZnPg==" 
-                                 alt="User" class="user-img">
-                            <span id="loggedInUser">
-                                <%= session.getAttribute("empName") != null ? session.getAttribute("empName") : "User" %>
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="Logout">Logout</a></li>
-                        </ul>
-                    </div>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                        <li><a class="dropdown-item" href="Logout">Logout</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
-    </header>
+    </div>
+</header>
 
     <div class="container py-4">
         <!-- Visitor Dashboard -->
@@ -590,11 +533,50 @@
             </div>
             
             <div style="overflow-x: auto;">
-                <div id="exportButtonsContainer">
-                    <strong>Export Options:</strong>
-                    <div class="dt-buttons"></div>
-                </div> 
-            
+               <div id="exportButtonsContainer">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <strong>Export Options:</strong>
+                        <div class="export-controls d-flex align-items-center gap-2">
+                            <!-- Export Dropdown -->
+                            <div class="dropdown">
+                                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" 
+                                        type="button" 
+                                        id="exportDropdown" 
+                                        data-bs-toggle="dropdown" 
+                                        aria-expanded="false">
+                                    <i class="fas fa-download me-1"></i> Export
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="exportTable('csv')">
+                                            <i class="fas fa-file-csv text-success me-2"></i> CSV
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="exportTable('excel')">
+                                            <i class="fas fa-file-excel text-primary me-2"></i> Excel
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="exportTable('pdf')">
+                                            <i class="fas fa-file-pdf text-danger me-2"></i> PDF
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#" onclick="exportTable('print')">
+                                            <i class="fas fa-print text-secondary me-2"></i> Print
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <!-- Refresh Button -->
+                            <button class="btn btn-outline-success btn-sm" onclick="updateVisitorsTable()">
+                                <i class="fas fa-sync-alt me-1"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                </div>
                 <table class="table table-striped table-hover display nowrap" id="visitorsTable">
                     <thead>
                         <tr>
