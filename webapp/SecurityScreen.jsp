@@ -132,7 +132,42 @@ body::before {
 	padding: 15px 0;
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 0.8rem 0;
+}
 
+.header-layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.left-section {
+    flex: 0 0 auto;
+}
+
+.center-section {
+    flex: 1;
+    text-align: center;
+    margin: 0 1rem;
+}
+
+.right-section {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+body {
+    margin-top: 80px; /* Adjust based on your header height */
+}
 .logo-container {
 	display: flex;
 	align-items: center;
@@ -568,39 +603,52 @@ body::before {
 	</div>
 
 	<!-- Header with Logo and User Info -->
-	<header class="header">
-		<div class="container">
-			<div
-				class="d-flex flex-wrap justify-content-between align-items-center">
-				<div class="d-flex align-items-center flex-wrap">
-					<img src="Images/Mahyco Grow Logo.png" alt="Logo"
-						class="logo-img me-4"
-						style="height: 50px; background-color: none;">
-					<h1 class="page-title mb-0">Visitor Management System</h1>
-				</div>
-				<div class="d-flex align-items-center gap-3 mt-2 mt-md-0">
-					<button class="manual-entry-btn btn" data-bs-toggle="modal"
-						data-bs-target="#manualEntryModal">
-						Manual Entry <i class="bi bi-shield-check"></i>
-					</button>
-					<div class="dropdown">
-						<a
-							class="d-flex align-items-center text-decoration-none dropdown-toggle text-white"
-							href="#" id="userDropdown" role="button"
-							data-bs-toggle="dropdown" aria-expanded="false"> <img
-							src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNSIgaGVpZ2h0PSIzNSIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+PGNpcmNsZSBjeD0iMTIiIGN5PSI4IiByPSI0Ii8+PHBhdGggZD0iTTIwIDE5djFhMSAxIDAgMCAxLTEgMUg1YTEgMSAwIDAgMS0xLTF2LTFhMyAzIDAgMCAxIDMtM2gxMGEzIDMgMCAwIDEgMyAzeiIvPjwvc3ZnPg=="
-							alt="User" class="user-img"> <span id="loggedInUser">Security
-								Officer</span>
-						</a>
-						<ul class="dropdown-menu dropdown-menu-end"
-							aria-labelledby="userDropdown">
-							<li><a class="dropdown-item" href="Logout">Logout</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-	</header>
+<header class="header">
+    <div class="container">
+        <div class="header-layout">
+            <!-- Left section: Logo -->
+            <div class="left-section">
+                <img src="Images/Mahyco Grow Logo.png" 
+                     alt="Logo" 
+                     class="logo-img">
+            </div>
+            
+            <!-- Center section: Title -->
+            <div class="center-section">
+                <h1 class="page-title mb-0">Visitor Management System</h1>
+            </div>
+            
+            <!-- Right section: Manual Entry Button and User Dropdown -->
+            <div class="right-section">
+                <button class="manual-entry-btn btn" 
+                        data-bs-toggle="modal" 
+                        data-bs-target="#manualEntryModal">
+                    Manual Entry <i class="bi bi-shield-check"></i>
+                </button>
+                
+                <div class="dropdown">
+                    <a class="d-flex align-items-center text-decoration-none dropdown-toggle text-white" 
+                       href="#" 
+                       id="userDropdown" 
+                       role="button" 
+                       data-bs-toggle="dropdown" 
+                       aria-expanded="false">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNSIgaGVpZ2h0PSIzNSIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+PGNpcmNsZSBjeD0iMTIiIGN5PSI4IiByPSI0Ii8+PHBhdGggZD0iTTIwIDE5djFhMSAxIDAgMCAxLTEgMUg1YTEgMSAwIDAgMS0xLTF2LTFhMyAzIDAgMCExIDMtM2gxMGEzIDMgMCAwIDEgMyAzeiIvPjwvc3ZnPg==" 
+                             alt="User" 
+                             class="user-img me-2">
+                        <span id="loggedInUser">Security Officer</span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" 
+                        aria-labelledby="userDropdown">
+                        <li>
+                            <a class="dropdown-item" href="Logout">Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
 
 	<div class="container mt-4">
 		<div class="row stats-scanner-row">
